@@ -1,0 +1,66 @@
+import pandas as pd
+
+people = {
+    "first": ['Corey', 'Jane', 'John'],
+    "last": ['Schafer', 'Doe', 'Doe'],
+    "email": ['CoreyMSchafer@gmail.com', 'JaneDoe@email.com', 'JohnDoe@email.com']
+}
+
+df = pd.DataFrame(people)
+
+# Joining Two Columns into One Column 
+df['full name'] = df['first'] + ' ' + df['last'] 
+
+# Dropping Multiple Columns 
+df.drop(columns = ['first', 'last'], inplace = True)
+
+# String Split
+df[['first', 'last']] = df['full name'].str.split(' ', expand = True)
+
+# Adding a Row By Index Number 
+df.loc['3', :] = ['ZacharyYoung@email.com', 'Zachary Young', 'Zachary', 'Young']
+
+# Dropping a Column By Index Number 
+df.drop(index='4')
+
+# Conditional Drop 
+filt = df['last'] == 'Yoon'
+df.drop(index=df[filt].index)
+
+# Sort by Descending Order 
+df.sort_values(by='last', ascending=False)
+
+# Sort Multiple Rows by Descending Order 
+df.sort_values(by=['first', 'last'], ascending=False)
+
+# Sort By Ascending Order
+df.sort_values(by='last', ascending=True)
+
+# Simple Sorting by Ascending Order
+df['last'].sort_values()
+
+# Simple Sorting by Descending Order
+df['last'].sort_values(ascending=False)
+
+import pandas as pd
+df = pd.read_csv(r'C:\Users\zacha\Hyperborea\csv files\survey_results_public.csv')
+
+df.rename(columns= {'ConvertedCompYearly': 'USD_Salary'}, inplace = True)
+
+# Sorting Multiple Columns By Ascending Order
+df[['Country', 'USD_Salary']].head(10)
+
+# Sorting Multiple Columns By Ascending and Descending Order 
+df.sort_values(by=['Country', 'USD_Salary'], ascending = [True, False], inplace = True)
+
+# Extracting Maximum Values From a Column
+df['USD_Salary'].nlargest(10)
+
+# Extracting Maximum Values from a Column with Additional Information
+df.nlargest(10, 'USD_Salary')
+
+# Extracting Minimum Values From a Column
+df['USD_Salary'].nsmallest(10)
+
+# Extracting Minimum Values from a Column with Additional Information
+df.nsmallest(10, 'USD_Salary')
