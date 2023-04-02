@@ -1,0 +1,123 @@
+import pandas as pd
+df = pd.read_csv(r'C:\Users\zacha\Hyperborea\csv files\survey_results_public.csv')
+
+df.set_index('ResponseId', inplace = True)
+df.rename(columns = {'ResponseId': 'Respondent'}, inplace = True)
+df.reset_index(inplace = True)
+df.set_index('Respondent', inplace = True)
+df.columns
+
+# Renaming Multiple Columns
+df.rename(columns = {'MainBranch':'Main_Branch', 'Employment':'Employment_Status', 'Country':'Nation'}, inplace = True)
+
+people = {
+    "first": ['Corey', 'Jane', 'John'],
+    "last": ['Schafer', 'Doe', 'Doe'],
+    "email": ['CoreyMSchafer@gmail.com', 'JaneDoe@email.com', 'JohnDoe@email.com']
+}
+
+df = pd.DataFrame(people)
+
+# Adding a New Column 
+df.insert(3, 'Social_Security', ['abcdefghi', 'jklmnopqr', 'stuvwxyza'], True)
+df.rename(columns = {'Social_Security': "social_security"}, inplace = True)
+
+# Moving Position of Columns 
+headers = list(df.columns)
+headers[0], headers[3] = headers[3], headers[0]
+
+# Hard Coding Column Position Change 
+df = df.reindex(['email', 'first', 'last', 'social_security'], axis = 1)
+
+# Altering Column Titles
+df.columns = [x.upper() for x in df.columns]
+df.columns = [x.lower() for x in df.columns]
+df.columns = df.columns.str.replace('_', ' ')
+
+# Replacing Values of a Row with All Attributes
+df.loc[2] = ['JohnSmith@gmail.com', 'John', 'Smith', 'stuvwxyza']
+
+# Replacing Only Certain Attributes of a Row
+df.loc[2, ['last', 'email']] = ['Doe', 'JohnDoe@email.com']
+
+# Replacing Only Certain Attributes of a Row
+df.loc[2, ['last', 'email address']] = ['Doe', 'JohnDoe@email.com']
+
+# Replacing Only One Attribute of A Row
+df.loc[2, 'last'] = 'Smith'
+
+# Alternative to Change One Attribute of a Row 
+df.at[2, 'email address'] = 'JohnSmith@email.com'
+
+# Convertng All Strings in a Column to Lower Case
+df['email'] = df['email'].str.lower()
+
+# Count of Attribute Length in a Column 
+df['email'].apply(len)
+
+# Using a Function to Temporarily Change String Values in a Column
+def update_email(email):
+    return email.upper()
+
+def update_first(first):
+    return first.upper()
+
+df['email'].apply(update_email)
+df['first'].apply(update_first)
+
+# Hard Coding a Function Application 
+df['email'] = df['email'].apply(update_email)
+
+# Hard Coding with a Lambda Function 
+df['email'] = df['email'].apply(lambda x: x.upper())
+
+# Count of All Columns in a DataFrame
+df.apply(len)
+
+# Count of a Particular Column 
+len(df['email'])
+
+# Filter for Minimum Values in Each Column 
+df.apply(pd.Series.min)
+
+# Lambda Function for Minimum Values in Each Column 
+df.apply(lambda x: x.min())
+
+# Filter for Maximum Values in Each Column 
+df.apply(pd.Series.max)
+
+# Lambda Function for Maximum Values in Each Column
+df.apply(lambda x: x.max())
+
+# Map Function for Count
+df.applymap(len)
+
+# Temporary Map Function to Lowercase a DataFrame
+df.applymap(str.lower)
+
+# Temporary Map Function to Uppercase a DataFrame 
+df.applymap(str.upper)
+
+# Alternative Method for Updating a DataFrame
+df['first'] = df['first'].replace({'Corey': 'Chris', 'Jane': 'Mary'})
+
+import pandas as pd 
+df = pd.read_csv(r'C:\Users\zacha\Hyperborea\csv files\survey_results_public.csv')
+df.rename(columns = {'ResponseId': "Respondent"}, inplace = True)
+df.set_index(['Respondent'], inplace = True)
+df.reset_index(inplace = True)
+df.rename(columns = {'ConvertedCompYearly': 'SalaryUSD'}, inplace = True)
+df['SalaryUSD']
+
+df.rename(columns = {'Gender': 'Male'}, inplace = True)
+
+# Applying a Map Function to Soft Code Binary Responses to Boolean Values 
+df['Male'].map({'Man': True, 'Woman': False})
+
+# Applying a Map Function to Hard Code Binary Responses to Boolean Values 
+df['Male'] = df['Male'].map({'Man': True, 'Woman': False})
+
+
+
+
+
