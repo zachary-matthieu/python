@@ -1,0 +1,30 @@
+import pandas as pd
+df = pd.read_csv(r'C:\Users\zacha\Hyperborea\csv files\survey_results_public.csv')
+
+df.rename(columns = {'ResponseId': "Respondent"}, inplace = True)
+
+df.set_index('Respondent', inplace = True)
+
+df.rename(columns = {'US_State': "State"}, inplace = True)
+
+df.rename(columns = {'Country': "Nation"}, inplace = True)
+
+df.rename(columns = {'ConvertedCompYearly': "Salary"}, inplace = True)
+
+# Filtering for Specific Values
+high_salary = (df['Salary'] > 60000)
+df[high_salary]
+
+# Filtering for Specific Values and Columns
+df.loc[high_salary, ['Nation', 'State']]
+
+# Hyper FIltering 
+nations_01 = ['United States', 'Canada', 'Germany', 'Switzerland']
+western_nations = df['Nation'].isin(nations_01)
+df.loc[western_nations, 'Nation']
+
+# Filtering for Specific String Values 
+lang_filt = df['LanguageHaveWorkedWith'].str.contains('Python', na = False)
+
+# Filtering for Specific String Values and Certain Columns 
+df.loc[lang_filt, 'LanguageHaveWorkedWith']
