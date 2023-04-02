@@ -1,0 +1,80 @@
+import pandas as pd
+
+df = pd.read_csv('survey_results_public.csv')
+schema_df = pd.read_csv('survey_results_schema.csv')
+
+# Creating a Python DataFrame
+people = {
+    "first": ['Corey', 'Jane', 'John'],
+    "last": ['Schafer', 'Doe', 'Doe'],
+    "email": ['CoreyMSchafer@gmail.com', 'JaneDoe@email.com', 'JohnDoe@email.com']
+}
+
+people["email"]
+
+df = pd.DataFrame(people)
+
+# Extracting a Specific Column 
+df['email']
+
+# Type Casting 
+type(df['email'])
+
+# Dot Notation Extraction 
+df.email
+
+# Extracting Specific Column(s)
+df[['last', 'email']]
+df[['first', 'email']]
+
+# Extracting Column Labels 
+df.columns
+
+# Extracting a Row (iloc = interger location)
+df.iloc[0]
+
+# Extracting Row(s)
+df.iloc[[0, 1]]
+
+# Extracting Rows Then By Column
+df.iloc[[0, 1], 2]
+
+# Extracting Row By Index 
+df.loc[0]
+
+# Extracting Row(s) By Index
+df.loc[[0, 1]]
+
+# Extracting Row(s) By Index Then By Column
+df.loc[[0, 1], ['email']]
+
+# Extracting Row(s) By Index Then By Column(s)
+df.loc[[0, 1], ['email', 'last']]
+
+# Return to Macro DataFrame
+import pandas as pd 
+df = pd.read_csv('survey_results_public.csv')
+
+# Value Counts 
+df['Gender'].value_counts()
+
+# Value Counts 
+df['Country'].value_counts()
+
+# Slicing Rows Then Slicing Columns
+df.loc[0:2, 'MainBranch':'Country']
+
+df = pd.DataFrame(people)
+df['email']
+
+# Soft Indexing a Column 
+df.set_index('email')
+
+# Hard Indexing a Column 
+df.set_index('email', inplace = True)
+
+# Extracting For a Specific Column 
+df.loc['CoreyMSchafer@gmail.com', 'last']
+
+# Resetting an Index
+df.reset_index(inplace = True)
