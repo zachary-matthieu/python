@@ -1,0 +1,62 @@
+import pandas as pd
+pd.set_option('display.float_format', lambda x: '%.3f' % x)
+df = pd.read_csv(r'C:\Users\zacha\Hyperborea\csv files\survey_results_public.csv')
+
+# DataFrame + Description 
+df.describe()
+
+# Column + Median 
+df['Salary'].median()
+
+# Column + Average 
+df['Salary'].mean()
+
+# Column + Count 
+df['Salary'].count()
+
+# Column + Value Count
+df['Country'].value_counts()
+
+# Column + Value Count + Percentage 
+df['Country'].value_counts(normalize = True)
+df['Employment'].value_counts(normalize = True)
+
+# Create a Groupby
+country_group = df.groupby(['Country'])
+
+# Groupby + Value 
+country_group.get_group('America')
+
+# Filter  
+usa_filt = df['Country'] == 'America'
+df.loc[usa_filt]
+
+# Loc + Filter + Value Count 
+df.loc[usa_filt]['Employment'].value_counts()
+
+# Filter + Value Count By Percentage 
+df.loc[usa_filt]['Employment'].value_counts(normalize = True)
+
+# Groupby + Value Count 
+country_group['Employment'].value_counts()
+
+# Groupby + Value Count + Head 
+country_group['Employment'].value_counts().head(25)
+
+# Groupby + Column + Value Count + Loc + Value 
+country_group['Employment'].value_counts().loc['China']
+
+# Groupby + Value Count + Percentage + Loc + Value 
+country_group['Employment'].value_counts(normalize = True).loc['China']
+
+# Groupby + Column + Mean + Value Counts 
+country_group['Salary'].mean().sort_values(ascending = False)
+
+# Groupby + Column + Mean + Value 
+country_group['Salary'].mean().loc['China']
+
+# Median + Mean = Agg Function 
+country_group['Salary'].agg(['median', 'mean']).loc['China']
+
+# Groupby + Column + Apply + Lambda + Str + Sum 
+country_group['Gender'].apply(lambda x: x.str.contains('Man').sum())
