@@ -1,0 +1,72 @@
+import pandas as pd
+
+# Correcting Time Formats 
+d_parser = lambda x: pd.datetime.strptime(x, '%Y-%m-%d %I-%p')
+df = pd.read_csv(r'C:\Users\zacha\Hyperborea\csv files\eth_data.csv', parse_dates = ['Date'], date_parser = d_parser)
+
+# Converting Str to DateTime
+df['Date'] = pd.to_datetime(df['Date'], format = '%Y-%m-%d %I-%p')
+
+# Extracting Day Name Values 
+df['Date'].dt.day_name()
+
+# Creating Day Name Columns 
+df['DayOfWeek'] = df['Date'].dt.day_name()
+
+# Extract Oldest Date 
+df['Date'].min()
+
+# Extract Most Recent Date 
+df['Date'].max()
+
+# Time Delta (Difference)
+df['Date'].max() - df['Date'].min()
+
+# Filter By Date 
+filt = (df['Date'] >= '2020')
+df.loc[filt]
+
+ly_filt = (df['Date'] >= '2019') & (df['Date'] < '2020')
+df.loc[ly_filt]
+
+# Extracting By Index 
+df.set_index(['Date'], inplace = True)
+df['2019']
+
+# Slicing Dates 
+df['2020-01': '2020-02']
+
+# Joining Dates With Price 
+df['2020-01': '2020-02']['Close']
+
+df['2020-01': '2020-02']['Close'].mean()
+
+# Extracting Max Value 
+df['2020-01-01']['High'].max()
+
+# Max Value Daily 
+df['High'].resample('D').max()
+
+# Max Weekly High
+df['High'].resample('W').max()
+
+# Filter For Max
+highs = df['High'].resample('D').max()
+highs['2020-01-01']
+
+# Max Yearly High 
+df['High'].resample('Y').max()
+
+# Matplotlib Additional 
+%matplotlib inline
+highs.plot()
+
+# Agg Dictionary of Functions For Resampled Columns 
+df.resample('W').agg({'Close': 'mean', 'High': 'max', 'Low': 'min', 'Volume': 'sum'})
+
+
+
+
+
+
+
