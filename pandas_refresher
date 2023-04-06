@@ -1,0 +1,77 @@
+import pandas as pd
+
+df = pd.read_csv(r'C:\Users\zacha\Hyperborea\csv files\pokemon_data.csv')
+
+df.rename(columns = {'#': 'No.'}, inplace = True)
+df.rename(columns = {'Health': 'HP'}, inplace = True)
+df.set_index('No.', inplace = True)
+
+# Extract Columns
+df[['Name', 'HP']][:7]
+
+# Extract Rows
+df.iloc[0:5]
+
+# Iterrows
+for index, row in df.iterrows():
+    print(index, row['Name'])
+    
+# Extract By Column Value 
+df.loc[df['Type 1'] == 'Fire'][0:5]
+
+# Sort Values
+df.sort_values('HP', ascending = False)
+
+# Creating New Column 
+df['Total'] = df['HP'] + df['Attack'] + df['Defense'] + df['Sp. Atk'] + df['Sp. Def'] + df['Speed']
+
+# Rearrange Column Order 
+df = df[['Name', 'Type 1', 'Type 2', 'HP', 'Attack', 'Defense', 'Sp. Atk', 'Sp. Def', 'Speed', 'Total', 'Generation', 'Legendary']]
+
+# Soft Drop Column 
+df.drop(columns = ['Total'])
+
+# Hard Drop Column
+df.pop('Total')
+
+# Create Total Column With Sum Function
+df['Total'] = df.iloc[:,3:9].sum(axis = 1)
+
+# Save DataFrame As Excel File
+df.to_excel(r'C:\Users\zacha\Hyperborea\xlsx\updated_poke_data.xlsx')
+
+# Create Filter
+fire = df.loc[df['Type 1'] == 'Fire']
+fire.head(5)
+
+# Multiple Filter
+strong_fire = df.loc[(df['Type 1'] == 'Fire') & (df['Total'] > 500)]
+df_fire = strong_fire
+
+# Creating A New DataFrame
+df_fire = pd.DataFrame(strong_fire)
+
+# Sort Value Function 
+df_fire.sort_values(['Total'], ascending = False).head(5)
+
+# Filter By String 
+df.loc[df['Name'].str.contains('Mega')].head(5)
+
+# Regex Loc
+import re
+df.loc[df['Type 1'].str.contains('Fire|Grass', regex = True)].head(5)
+
+# Regex Loc Regardless of Case Format
+import re
+df.loc[df['Type 1'].str.contains('fire|grass', flags = re.I, regex = True)].head(5)
+
+# Groupby
+df.groupby(['Type 1']).mean().sort_values('Attack', ascending = False).head(5)
+
+# Value Counts
+df.value_counts('Type 1', normalize = True)
+
+# Data Chunks
+for df in pd.read_csv(r'C:\Users\zacha\Hyperborea\csv\pokemon_data.csv', chunksize = 100):
+    print('Segments of 100')
+    print(df)
