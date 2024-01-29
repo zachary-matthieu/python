@@ -1,0 +1,74 @@
+# Portfolio
+portfolio_weights = np.array([0.12, 0.15, 0.08, 0.05, 0.09, 0.10, 0.11, 0.14, 0.16])
+
+# Calculate Weight
+WeightedReturns = StockReturns.mul(portfolio_weights, axis=1)
+
+# Calculate Returns
+StockReturns['Portfolio'] = WeightedReturns.sum(axis=1)
+
+# Plot 
+CumulativeReturns = ((1+StockReturns["Portfolio"]).cumprod()-1)
+CumulativeReturns.plot()
+plt.show()
+
+
+
+# Quantity
+numstocks = 9
+
+# Assets
+portfolio_weights_ew = np.repeat(1/numstocks, numstocks)
+
+# Calculate Equally-Weighted Portfolio 
+StockReturns['Portfolio_EW'] = StockReturns.iloc[:, 0:numstocks].mul(portfolio_weights_ew, axis=1).sum(axis=1)
+cumulative_returns_plot(['Portfolio', 'Portfolio_EW'])
+
+
+
+# Market Capitalizations 
+market_capitalizations = np.array([601.51, 469.25, 349.5, 310.48, 299.77, 356.94, 268.88, 331.57, 246.09])
+
+# Market Cap 
+mcap_weights = market_capitalizations / sum(market_capitalizations)
+
+# Calculate Market Cap Portfolio 
+StockReturns['Portfolio_MCap'] = StockReturns.iloc[:, 0:9].mul(mcap_weights, axis=1).sum(axis=1)
+cumulative_returns_plot(['Portfolio', 'Portfolio_EW', 'Portfolio_MCap'])
+
+
+
+# Correlation Matrix
+correlation_matrix = StockReturns.corr()
+print(correlation_matrix)
+
+
+
+# Import 
+import seaborn as sns
+
+# Heatmap
+sns.heatmap(correlation_matrix,
+            annot=True,
+            cmap="YlGnBu", 
+            linewidths=0.3,
+            annot_kws={"size": 8})
+
+# Plot 
+plt.xticks(rotation=90)
+plt.yticks(rotation=0) 
+plt.show()
+
+
+
+# Covariance Matrix
+cov_mat = StockReturns.cov()
+
+# Annualize Co-Variance Matrix
+cov_mat_annual = cov_mat*252
+print(cov_mat_annual)
+
+
+# Standard Deviation Portfolio
+portfolio_volatility = np.sqrt(np.dot(portfolio_weights.T, np.dot(cov_mat_annual, portfolio_weights)))
+print(portfolio_volatility)
